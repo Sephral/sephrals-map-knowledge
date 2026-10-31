@@ -54,7 +54,7 @@ const CATALOG = [
   { id: "sephrals-crucible-sheet-quickbar", title: "Crucible Sheet & Quickbar", listed: true, systems: ["crucible"],
     text: { en: "A compact hero and adversary sheet with a combat quickbar.",
       de: "Ein kompakter Bogen für Helden und Gegner mit Kampfleiste." } },
-  { id: "sephrals-handout-lens", title: "Handout Lens", listed: false, released: false, video: false,
+  { id: "sephrals-handout-lens", title: "Handout Lens", listed: false, released: false,
     text: { en: "Zoom, pan and a reading lens for every picture you show your players.",
       de: "Zoomen, verschieben und eine Leselupe für jedes Bild, das du deinen Spielern zeigst." } },
   { id: "sephrals-file-commander", title: "File Commander", listed: true,
