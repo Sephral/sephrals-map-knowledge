@@ -1,0 +1,77 @@
+<div class="smk-shell">
+  <header class="smk-where">
+    <div class="smk-scene"><i class="fa-solid fa-map" inert></i> <span>{{scene}}</span>{{#if level}} <span class="smk-level">· {{level}}</span>{{/if}}</div>
+    {{#if fog}}<span class="smk-badge">{{fog}}</span>{{/if}}
+  </header>
+  {{#if problem}}<p class="smk-problem"><i class="fa-solid fa-triangle-exclamation" inert></i> {{problem}}</p>{{/if}}
+
+  <div class="smk-mode" role="group" aria-label="{{text.modeHint}}">
+    <button type="button" data-action="mode" data-mode="reveal" class="{{#unless hide}}smk-on{{/unless}}"
+      aria-pressed="{{#if hide}}false{{else}}true{{/if}}"><i class="fa-solid fa-eye" inert></i> {{text.reveal}}</button>
+    <button type="button" data-action="mode" data-mode="hide" class="{{#if hide}}smk-on smk-hide{{/if}}"
+      aria-pressed="{{#if hide}}true{{else}}false{{/if}}"><i class="fa-solid fa-eye-slash" inert></i> {{text.hide}}</button>
+  </div>
+  <p class="smk-hint">{{text.toolsHint}}{{#unless layerActive}} <a data-action="tools">{{text.tools}}</a>{{/unless}}</p>
+
+  <section class="smk-card">
+    <h3>{{text.who}}</h3>
+    {{#if shared}}
+    <p class="smk-hint">{{text.sharedNote}}</p>
+    {{else}}
+    <div class="smk-choice">
+      <label><input type="radio" name="targetAll" value="all" {{#if all}}checked{{/if}}> {{text.all}}</label>
+      <label><input type="radio" name="targetAll" value="chosen" {{#unless all}}checked{{/unless}}> {{text.chosen}}</label>
+    </div>
+    {{/if}}
+    {{#if noPlayers}}
+    <p class="smk-hint">{{text.noPlayers}}</p>
+    {{else}}
+    <ul class="smk-players">
+      {{#each players}}
+      <li>
+        <label>
+          <input type="checkbox" data-player="{{id}}" {{#if chosen}}checked{{/if}} {{#if ../shared}}disabled{{/if}}>
+          <span class="smk-dot" style="--smk-user: {{color}}"></span>
+          <span class="smk-name">{{name}}</span>
+        </label>
+        <span class="smk-online {{#if online}}smk-is-online{{/if}}" data-tooltip="{{#if online}}{{../text.online}}{{else}}{{../text.offline}}{{/if}}"
+          aria-label="{{#if online}}{{../text.online}}{{else}}{{../text.offline}}{{/if}}"></span>
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+  </section>
+
+  <section class="smk-card">
+    <h3>{{text.level}}</h3>
+    <div class="smk-row">
+      <button type="button" data-action="revealWhole"><i class="fa-solid fa-map-location-dot" inert></i> {{text.revealWhole}}</button>
+      <button type="button" data-action="hideWhole"><i class="fa-solid fa-cloud" inert></i> {{text.hideWhole}}</button>
+    </div>
+    {{#unless noPlayers}}
+    <h3>{{text.shareTitle}}</h3>
+    <div class="smk-row">
+      <select name="shareFrom" aria-label="{{text.shareTitle}}">
+        {{#each players}}<option value="{{id}}" {{#if share}}selected{{/if}}>{{name}}</option>{{/each}}
+      </select>
+      <button type="button" data-action="share" data-tooltip="{{text.shareHint}}"><i class="fa-solid fa-share-nodes" inert></i> {{text.share}}</button>
+    </div>
+    {{/unless}}
+  </section>
+
+  <section class="smk-card">
+    <h3>{{text.view}}</h3>
+    <div class="smk-row">
+      <label class="smk-check"><input type="checkbox" name="overlay" {{#if overlay}}checked{{/if}}> {{text.overlay}}</label>
+      <select name="overlayUser" aria-label="{{text.view}}">
+        <option value="" {{#if overlayGroup}}selected{{/if}}>{{text.overlayGroup}}</option>
+        {{#each players}}<option value="{{id}}" {{#if overlay}}selected{{/if}}>{{name}}</option>{{/each}}
+      </select>
+    </div>
+  </section>
+
+  <footer class="smk-foot">
+    <span class="smk-last">{{last}}</span>
+    <button type="button" data-action="undo" {{#unless canUndo}}disabled{{/unless}}><i class="fa-solid fa-rotate-left" inert></i> {{text.undo}}</button>
+  </footer>
+</div>

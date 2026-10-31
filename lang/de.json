@@ -1,0 +1,179 @@
+{
+  "SMK": {
+    "gear": "Einstellungen",
+    "LANGUAGE": {
+      "default": "Wie Foundry",
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "SETTINGS": {
+      "uiLanguage": {
+        "name": "Sprache des Moduls",
+        "hint": "Sprache von Kartenwissen auf diesem Gerät. Wie Foundry nimmt die Sprache von Foundry."
+      },
+      "theme": {
+        "name": "Aussehen",
+        "hint": "Signature ist der warme Papierlook von Sephrals Modulen, Foundry folgt den dunklen Fenstern von Foundry.",
+        "signature": "Signature",
+        "foundry": "Foundry"
+      },
+      "openPanel": {
+        "name": "Fenster mit den Werkzeugen öffnen",
+        "hint": "Öffnet das Fenster von Kartenwissen, sobald du die Werkzeuge von Kartenwissen wählst."
+      },
+      "overlayColor": {
+        "name": "Farbe unbekannter Bereiche",
+        "hint": "Farbe, die verdeckt, was die Spieler nicht kennen, wenn du ihr Wissen anzeigst."
+      },
+      "overlayOpacity": {
+        "name": "Stärke der Farbe",
+        "hint": "Wie kräftig die Farbe unbekannte Bereiche verdeckt."
+      },
+      "notifyPlayers": {
+        "name": "Spieler über Änderungen informieren",
+        "hint": "Spieler bekommen einen kurzen Hinweis, wenn du Bereiche für sie aufdeckst oder verdeckst."
+      }
+    },
+    "Controls": {
+      "title": "Kartenwissen",
+      "rect": "Rechteck: über die Karte ziehen (Umschalt für ein Quadrat)",
+      "ellipse": "Ellipse: über die Karte ziehen (Umschalt für einen Kreis)",
+      "polygon": "Vieleck: Ecken anklicken, Doppelklick oder Klick auf die erste Ecke schließt es, Rechtsklick nimmt die letzte Ecke weg",
+      "room": "Raum: in einen Raum klicken, die Wände sind seine Grenze",
+      "hideMode": "Verdecken statt aufdecken (oder Alt halten)",
+      "overlay": "Zeigen, was die Spieler kennen",
+      "panel": "Fenster Kartenwissen",
+      "undo": "Letzte Änderung zurücknehmen (Strg+Z)"
+    },
+    "Panel": {
+      "title": "Kartenwissen",
+      "open": "Öffnen",
+      "menuHint": "Das Fenster mit den Spielern, der ganzen Ebene, dem Teilen und dem Zurücknehmen.",
+      "noScene": "Keine Szene",
+      "fogShared": "Gemeinsamer Nebel",
+      "fogIndividual": "Nebel pro Spieler",
+      "reveal": "Aufdecken",
+      "hide": "Verdecken",
+      "modeHint": "Was die Werkzeuge tun",
+      "who": "Für",
+      "all": "Alle Spieler",
+      "chosen": "Ausgewählte Spieler",
+      "sharedNote": "Diese Szene hat einen gemeinsamen Nebel des Krieges, jede Änderung gilt für alle Spieler.",
+      "noPlayers": "Diese Welt hat noch keine Spieler.",
+      "online": "Online",
+      "offline": "Offline, bekommt es beim nächsten Besuch",
+      "levelTitle": "Diese Ebene",
+      "revealWhole": "Alles aufdecken",
+      "hideWhole": "Alles verdecken",
+      "hideWholeConfirm": "Die ausgewählten Spieler vergessen diese ganze Ebene. Ihre Tokens sehen wieder, was in Sicht ist.",
+      "shareTitle": "Was ein Spieler kennt",
+      "share": "An die anderen geben",
+      "shareHint": "Die ausgewählten Spieler lernen auch alles, was dieser Spieler von dieser Ebene kennt.",
+      "view": "Ansicht",
+      "overlay": "Zeigen, was sie kennen",
+      "overlayGroup": "Die ausgewählten Spieler zusammen",
+      "undo": "Zurücknehmen",
+      "tools": "Werkzeuge wählen",
+      "toolsHint": "Ziehen, Ecken anklicken oder in einen Raum klicken. Alt halten zum Verdecken.",
+      "last": "{what}: {action} für {done} um {time}",
+      "lastFailed": "{what}: {action} für {done}, {failed} fehlgeschlagen, um {time}"
+    },
+    "Kind": {
+      "rect": "Rechteck",
+      "ellipse": "Ellipse",
+      "polygon": "Vieleck",
+      "room": "Raum",
+      "whole": "Ganze Ebene",
+      "region": "Region",
+      "share": "Geteiltes Wissen",
+      "api": "Makro"
+    },
+    "Action": {
+      "reveal": "aufgedeckt",
+      "hide": "verdeckt",
+      "share": "geteilt",
+      "undo": "zurückgenommen",
+      "undone": "zurückgenommen"
+    },
+    "Notice": {
+      "gmOnly": "Nur die Spielleitung kann ändern, was die Spieler kennen.",
+      "noFogApi": "Kartenwissen braucht Foundry 14 und erreicht hier den Nebel des Krieges nicht. Starte den Selbsttest in den Moduleinstellungen.",
+      "noScene": "Öffne zuerst eine Szene.",
+      "noVision": "Diese Szene hat keine Token-Sicht und damit keinen Nebel des Krieges. Schalte die Token-Sicht in den Szeneneinstellungen ein.",
+      "noExploration": "Diese Szene merkt sich keine erkundeten Bereiche. Schalte die Nebelerkundung in den Szeneneinstellungen ein.",
+      "failed": "{failed} Spieler haben die Änderung nicht bekommen, {done} schon.",
+      "noSnapshot": "{missing} Spieler konnten den Bereich nicht zurückbekommen, ihre frühere Karte wurde nicht aufbewahrt.",
+      "unanswered": "{count} Spieler haben nicht geantwortet. Die Spielleitung hat die Änderung gespeichert, ihre Bildschirme laden den Nebel neu.",
+      "noPlayers": "Niemand ist ausgewählt, es hat sich nichts geändert.",
+      "sourceKnowsNothing": "{name} kennt von dieser Ebene noch nichts.",
+      "nothingToUndo": "Nichts zum Zurücknehmen.",
+      "noRoom": "An dieser Stelle ist kein Raum.",
+      "polygonTooSmall": "Ein Vieleck braucht mindestens drei Ecken.",
+      "playerLearned": "Die Spielleitung hat dir mehr von der Karte von {scene} gezeigt.",
+      "playerLearnedUnnamed": "Die Spielleitung hat dir mehr von der Karte gezeigt.",
+      "playerForgot": "Die Spielleitung hat einen Teil der Karte von {scene} wieder verdeckt.",
+      "playerForgotUnnamed": "Die Spielleitung hat einen Teil der Karte wieder verdeckt."
+    },
+    "BEHAVIOR": {
+      "label": "Kartenwissen",
+      "hint": "Spieler lernen einen Bereich der Karte kennen oder vergessen ihn, wenn ein Token die Region betritt.",
+      "audience": {
+        "owners": "Besitzer des Tokens",
+        "everyone": "Alle Spieler"
+      },
+      "FIELDS": {
+        "area": {
+          "label": "Bereich",
+          "hint": "Die Region, deren Bereich die Spieler kennenlernen. Leer heißt diese Region."
+        },
+        "audience": {
+          "label": "Wer es lernt",
+          "hint": "Bei gemeinsamem Nebel lernen es alle Spieler."
+        },
+        "hide": {
+          "label": "Stattdessen verdecken",
+          "hint": "Die Spieler vergessen den Bereich, statt ihn kennenzulernen."
+        },
+        "playersOnly": {
+          "label": "Nur Tokens von Spielern",
+          "hint": "Tokens, die keinem Spieler gehören, lösen es nicht aus."
+        },
+        "once": {
+          "label": "Nur einmal",
+          "hint": "Das Verhalten schaltet sich nach dem ersten Mal selbst ab."
+        }
+      }
+    },
+    "Keys": {
+      "openPanel": "Fenster Kartenwissen öffnen",
+      "toggleMode": "Zwischen Aufdecken und Verdecken wechseln"
+    },
+    "SELFTEST": {
+      "Title": "Selbsttest von Kartenwissen",
+      "Run": "Selbsttest starten",
+      "Hint": "Prüft, was Kartenwissen von Foundry braucht, und zeichnet eine kleine Testkarte.",
+      "Generation": "Kartenwissen braucht Foundry 14, dies ist {version}.",
+      "FogApi": "Der Nebel des Krieges dieser Foundry-Version bietet nicht, womit Kartenwissen zeichnet.",
+      "FogModes": "Die Modi der Nebelerkundung fehlen.",
+      "Explorations": "Gespeicherte Nebelerkundungen pro Ebene fehlen.",
+      "Walls": "Die Wandpolygone für das Raumwerkzeug fehlen.",
+      "Behavior": "Das Regionsverhalten ist nicht registriert.",
+      "Socket": "Der Socket des Moduls ist aus.",
+      "Layer": "Die Ebene von Kartenwissen fehlt auf der Leinwand.",
+      "Storage": "Die Einstellung {key} fehlt.",
+      "Texts": "Texte fehlen: {keys}",
+      "Drawing": "Die Testzeichnung in eine Nebeltextur ist fehlgeschlagen.",
+      "Problems": "Kartenwissen: {problems} von {checks} Prüfungen haben ein Problem gefunden.",
+      "Passed": "Kartenwissen: alle {checks} Prüfungen bestanden.",
+      "Version": "Foundry {current}, getestet mit {tested}.",
+      "NewVersions": "Kartenwissen wurde mit einer älteren Version getestet ({versions}). Starte den Selbsttest in seinen Einstellungen."
+    },
+    "DEBUG": {
+      "Title": "Debug-Datei",
+      "Save": "Debug-Datei speichern",
+      "Hint": "Speichert eine Datei für Fehlerberichte über alle Module von Sephral in dieser Welt: Versionen, Einstellungen und was die Module aufgezeichnet haben, etwa die letzten Chatnachrichten, die sie gelesen haben. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen.",
+      "Entry": "Debug-Datei speichern (Sephral’s Module)",
+      "Saved": "Debug-Datei {file} gespeichert. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen."
+    }
+  }
+}

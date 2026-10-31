@@ -1,0 +1,179 @@
+{
+  "SMK": {
+    "gear": "Settings",
+    "LANGUAGE": {
+      "default": "Follow Foundry",
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "SETTINGS": {
+      "uiLanguage": {
+        "name": "Module language",
+        "hint": "Language of Map Knowledge on this device. Follow Foundry uses Foundry's language."
+      },
+      "theme": {
+        "name": "Look",
+        "hint": "Signature is the warm paper look of Sephral's modules, Foundry follows Foundry's dark windows.",
+        "signature": "Signature",
+        "foundry": "Foundry"
+      },
+      "openPanel": {
+        "name": "Open the window with the tools",
+        "hint": "Opens the Map Knowledge window whenever you pick the Map Knowledge tools."
+      },
+      "overlayColor": {
+        "name": "Tint of unknown areas",
+        "hint": "Color that covers what the players do not know when you show their knowledge."
+      },
+      "overlayOpacity": {
+        "name": "Strength of the tint",
+        "hint": "How strongly the tint covers unknown areas."
+      },
+      "notifyPlayers": {
+        "name": "Tell players about changes",
+        "hint": "Players get a short notice when you reveal or hide areas for them."
+      }
+    },
+    "Controls": {
+      "title": "Map Knowledge",
+      "rect": "Rectangle: drag across the map (Shift for a square)",
+      "ellipse": "Ellipse: drag across the map (Shift for a circle)",
+      "polygon": "Polygon: click the corners, double click or click the first corner to finish, right click removes the last corner",
+      "room": "Room: click into a room, the walls are its border",
+      "hideMode": "Hide instead of reveal (or hold Alt)",
+      "overlay": "Show what the players know",
+      "panel": "Map Knowledge window",
+      "undo": "Undo the last change (Ctrl+Z)"
+    },
+    "Panel": {
+      "title": "Map Knowledge",
+      "open": "Open",
+      "menuHint": "The window with the players, the whole Level, sharing and the undo.",
+      "noScene": "No scene",
+      "fogShared": "Shared fog",
+      "fogIndividual": "Fog per player",
+      "reveal": "Reveal",
+      "hide": "Hide",
+      "modeHint": "What the tools do",
+      "who": "For",
+      "all": "All players",
+      "chosen": "Chosen players",
+      "sharedNote": "This scene shares one fog of war, so every change counts for all players.",
+      "noPlayers": "This world has no players yet.",
+      "online": "Online",
+      "offline": "Offline, gets it on the next visit",
+      "levelTitle": "This Level",
+      "revealWhole": "Reveal all",
+      "hideWhole": "Hide all",
+      "hideWholeConfirm": "The chosen players forget this whole Level. Their tokens see again what is in sight.",
+      "shareTitle": "What a player knows",
+      "share": "Give to the others",
+      "shareHint": "The chosen players also learn everything this player knows of this Level.",
+      "view": "View",
+      "overlay": "Show what they know",
+      "overlayGroup": "The chosen players together",
+      "undo": "Undo",
+      "tools": "Pick the tools",
+      "toolsHint": "Drag, click corners or click into a room. Hold Alt to hide.",
+      "last": "{what}: {action} for {done} at {time}",
+      "lastFailed": "{what}: {action} for {done}, {failed} failed, at {time}"
+    },
+    "Kind": {
+      "rect": "Rectangle",
+      "ellipse": "Ellipse",
+      "polygon": "Polygon",
+      "room": "Room",
+      "whole": "Whole Level",
+      "region": "Region",
+      "share": "Shared knowledge",
+      "api": "Macro"
+    },
+    "Action": {
+      "reveal": "revealed",
+      "hide": "hidden",
+      "share": "shared",
+      "undo": "undone",
+      "undone": "taken back"
+    },
+    "Notice": {
+      "gmOnly": "Only a GM can change what the players know.",
+      "noFogApi": "Map Knowledge needs Foundry 14 and cannot reach its fog of war here. Run the self test in the module settings.",
+      "noScene": "Open a scene first.",
+      "noVision": "This scene has no token vision, so there is no fog of war. Turn on token vision in the scene settings.",
+      "noExploration": "This scene does not remember explored areas. Turn on fog exploration in the scene settings.",
+      "failed": "{failed} players did not get the change, {done} did.",
+      "noSnapshot": "{missing} players could not get the area back, their earlier map was not kept.",
+      "unanswered": "{count} players did not answer. The GM saved the change for them, their screens load the fog again.",
+      "noPlayers": "Nobody is chosen, so nothing changed.",
+      "sourceKnowsNothing": "{name} knows nothing of this Level yet.",
+      "nothingToUndo": "Nothing to undo.",
+      "noRoom": "There is no room at this point.",
+      "polygonTooSmall": "A polygon needs at least three corners.",
+      "playerLearned": "The GM showed you more of the map of {scene}.",
+      "playerLearnedUnnamed": "The GM showed you more of the map.",
+      "playerForgot": "The GM covered part of the map of {scene} again.",
+      "playerForgotUnnamed": "The GM covered part of the map again."
+    },
+    "BEHAVIOR": {
+      "label": "Map Knowledge",
+      "hint": "Players learn an area of the map, or forget it, when a token enters the Region.",
+      "audience": {
+        "owners": "Owners of the token",
+        "everyone": "All players"
+      },
+      "FIELDS": {
+        "area": {
+          "label": "Area",
+          "hint": "The Region whose area the players learn. Empty means this Region."
+        },
+        "audience": {
+          "label": "Who learns it",
+          "hint": "With shared fog every player learns it."
+        },
+        "hide": {
+          "label": "Hide instead",
+          "hint": "The players forget the area instead of learning it."
+        },
+        "playersOnly": {
+          "label": "Only tokens of players",
+          "hint": "Tokens that no player owns do not trigger it."
+        },
+        "once": {
+          "label": "Only once",
+          "hint": "The behavior switches itself off after the first time."
+        }
+      }
+    },
+    "Keys": {
+      "openPanel": "Open the Map Knowledge window",
+      "toggleMode": "Switch between reveal and hide"
+    },
+    "SELFTEST": {
+      "Title": "Map Knowledge self test",
+      "Run": "Run self test",
+      "Hint": "Checks what Map Knowledge needs from Foundry and draws a small test map.",
+      "Generation": "Map Knowledge needs Foundry 14, this is {version}.",
+      "FogApi": "The fog of war of this Foundry version does not offer what Map Knowledge draws with.",
+      "FogModes": "The fog exploration modes are missing.",
+      "Explorations": "Stored fog explorations per Level are missing.",
+      "Walls": "The wall polygons for the room tool are missing.",
+      "Behavior": "The Region behavior is not registered.",
+      "Socket": "The module socket is off.",
+      "Layer": "The Map Knowledge layer is missing on the canvas.",
+      "Storage": "The setting {key} is missing.",
+      "Texts": "Texts are missing: {keys}",
+      "Drawing": "The test drawing into a fog texture failed.",
+      "Problems": "Map Knowledge: {problems} of {checks} checks found a problem.",
+      "Passed": "Map Knowledge: all {checks} checks passed.",
+      "Version": "Foundry {current}, tested with {tested}.",
+      "NewVersions": "Map Knowledge was tested with an older version ({versions}). Run the self test in its settings."
+    },
+    "DEBUG": {
+      "Title": "Debug file",
+      "Save": "Save debug file",
+      "Hint": "Saves one file for bug reports about all of Sephral’s modules in this world: versions, settings and what the modules recorded, such as the latest chat messages they read. It contains chat text and whispers, check it before you share it.",
+      "Entry": "Save Debug File (Sephral’s Modules)",
+      "Saved": "Debug file {file} saved. It contains chat text and whispers, check it before you share it."
+    }
+  }
+}

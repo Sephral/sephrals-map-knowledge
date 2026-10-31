@@ -1,0 +1,298 @@
+/* Sephral’s Map Knowledge */
+
+/* Colors: the warm signature look by default, the dark Foundry look per user */
+.smk-app {
+  --smk-paper: #fbf6ea;
+  --smk-paper-2: #f3ecde;
+  --smk-card: rgb(255 250 240 / 0.92);
+  --smk-ink: #1f1a17;
+  --smk-muted: #6f655d;
+  --smk-line: rgb(73 49 32 / 0.14);
+  --smk-field: #fffdf7;
+  --smk-accent: #9c3b22;
+  --smk-accent-soft: rgb(156 59 34 / 0.12);
+  --smk-on-accent: #fffaf0;
+  --smk-reveal: #2d7753;
+  --smk-hide: #8c3e47;
+  --smk-warn: #8a5a00;
+  --smk-warn-soft: rgb(214 160 40 / 0.16);
+  --smk-radius: 12px;
+}
+
+.smk-app[data-smk-theme="foundry"] {
+  --smk-paper: #24211e;
+  --smk-paper-2: #1c1a18;
+  --smk-card: rgb(255 255 255 / 0.05);
+  --smk-ink: #ece5d8;
+  --smk-muted: #aba191;
+  --smk-line: rgb(255 255 255 / 0.12);
+  --smk-field: rgb(0 0 0 / 0.25);
+  --smk-accent: #d8784e;
+  --smk-accent-soft: rgb(216 120 78 / 0.18);
+  --smk-on-accent: #1c1a18;
+  --smk-reveal: #5cbf8a;
+  --smk-hide: #e07b86;
+  --smk-warn: #f0c060;
+  --smk-warn-soft: rgb(240 192 96 / 0.14);
+  --smk-radius: 6px;
+}
+
+.smk-app .window-content {
+  padding: 0;
+  background: linear-gradient(180deg, var(--smk-paper) 0%, var(--smk-paper-2) 100%);
+  color: var(--smk-ink);
+}
+
+.smk-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  font-size: 13px;
+}
+
+/* Buttons */
+.smk-app button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  height: 28px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid var(--smk-line);
+  border-radius: 999px;
+  background: var(--smk-field);
+  color: var(--smk-ink);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.smk-app button:hover:not(:disabled) {
+  border-color: var(--smk-accent);
+  background: var(--smk-accent-soft);
+}
+
+.smk-app button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.smk-app select {
+  height: 28px;
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--smk-line);
+  border-radius: var(--smk-radius);
+  background: var(--smk-field);
+  color: var(--smk-ink);
+  font-size: 12px;
+}
+
+/* Where */
+.smk-where {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.smk-scene {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.smk-level {
+  color: var(--smk-muted);
+  font-weight: 400;
+}
+
+.smk-badge {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--smk-accent-soft);
+  color: var(--smk-accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.smk-problem {
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: var(--smk-radius);
+  background: var(--smk-warn-soft);
+  color: var(--smk-warn);
+  font-size: 12px;
+}
+
+/* Reveal or hide */
+.smk-mode {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.smk-mode button {
+  height: 32px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.smk-mode button.smk-on {
+  border-color: var(--smk-reveal);
+  background: var(--smk-reveal);
+  color: var(--smk-on-accent);
+}
+
+.smk-mode button.smk-on.smk-hide {
+  border-color: var(--smk-hide);
+  background: var(--smk-hide);
+}
+
+.smk-hint {
+  margin: 0;
+  color: var(--smk-muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.smk-hint a {
+  color: var(--smk-accent);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Cards */
+.smk-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid var(--smk-line);
+  border-radius: var(--smk-radius);
+  background: var(--smk-card);
+}
+
+.smk-card h3 {
+  margin: 0;
+  border: none;
+  color: var(--smk-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.smk-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.smk-row button {
+  flex: 1;
+}
+
+.smk-choice {
+  display: flex;
+  gap: 12px;
+}
+
+/* Plain radio buttons: Foundry's own draw a large dark disc in light windows */
+.smk-app .smk-choice input[type="radio"] {
+  appearance: auto;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--smk-accent);
+}
+
+.smk-app .smk-choice input[type="radio"]::before,
+.smk-app .smk-choice input[type="radio"]::after {
+  display: none;
+  content: none;
+}
+
+.smk-choice label,
+.smk-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.smk-players {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.smk-players li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.smk-players label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.smk-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.smk-dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--smk-user, var(--smk-muted));
+}
+
+.smk-online {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--smk-muted);
+  border-radius: 50%;
+}
+
+.smk-online.smk-is-online {
+  border-color: var(--smk-reveal);
+  background: var(--smk-reveal);
+}
+
+/* Last change */
+.smk-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.smk-last {
+  min-width: 0;
+  color: var(--smk-muted);
+  font-size: 11px;
+  line-height: 1.3;
+}

@@ -1,0 +1,42 @@
+{
+  "id": "sephrals-map-knowledge",
+  "title": "Sephral’s Map Knowledge",
+  "description": "Mark parts of the map as known to your players while token vision keeps working: a rectangle, an ellipse, a polygon or a whole room with one click, for everyone or chosen players, hide it again, see what each player knows, and reveal areas when a token walks into a region.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": 14,
+    "verified": "14.369",
+    "maximum": "14"
+  },
+  "authors": [
+    {
+      "name": "Sephral",
+      "url": "https://github.com/Sephral"
+    }
+  ],
+  "url": "https://github.com/Sephral/sephrals-map-knowledge.git",
+  "esmodules": [
+    "scripts/smk.mjs"
+  ],
+  "styles": [
+    "styles/smk.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    }
+  ],
+  "socket": true,
+  "documentTypes": {
+    "RegionBehavior": {
+      "reveal": {}
+    }
+  }
+}
