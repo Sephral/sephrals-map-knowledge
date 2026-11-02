@@ -2,6 +2,7 @@
 
 **The party found the old map of the dungeon, or the scout came back and drew what she saw. In Foundry the players still stare at black fog until their tokens walk every corridor. Map Knowledge lets you mark parts of the map as known, for everyone or for chosen players, while token vision keeps working.**
 
+[![Install by link](https://img.shields.io/badge/Foundry%20VTT-Install%20by%20link-fe6a1f?logo=foundryvirtualtabletop&logoColor=white)](#install)
 [![Join Discord](https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?logo=discord&logoColor=white)](https://discord.gg/7BjCgDYaBP)
 [![More modules by Sephral](https://img.shields.io/badge/GitHub-More%20modules%20by%20Sephral-181717?logo=github&logoColor=white)](https://github.com/Sephral)
 
@@ -30,7 +31,19 @@ Map Knowledge writes into Foundry’s own fog of war, so it needs a scene with t
 
 ## Install
 
-Use the manifest URL `https://github.com/Sephral/sephrals-map-knowledge/releases/latest/download/module.json` in Foundry's module installer.
+Map Knowledge is not in Foundry's module search yet. Copy this link:
+
+```text
+https://github.com/Sephral/sephrals-map-knowledge/releases/latest/download/module.json
+```
+
+1. In Foundry's setup screen open **Add-on Modules** and click **Install Module**.
+2. Paste the link into **Manifest URL** at the bottom of the window.
+3. Click **Install**, then enable the module in your world.
+
+On The Forge open the Bazaar, click **Install From Manifest** and paste the link.
+
+![How to install a module by its link](https://raw.githubusercontent.com/Sephral/Sephral/main/media/install.gif)
 
 Foundry VTT 14 · any game system · English and German
 
