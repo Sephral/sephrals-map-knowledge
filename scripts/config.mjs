@@ -13,7 +13,7 @@ export const SOCKET = `module.${MODULE_ID}`;
 export const TEMPLATES = `modules/${MODULE_ID}/templates`;
 
 /** The Foundry versions the module was verified against (see the self-test). */
-export const TESTED_VERSIONS = {core: "14.369"};
+export const TESTED_VERSIONS = {core: "14.370"};
 
 /** The name of the canvas layer and of its scene control group. */
 export const LAYER = "mapKnowledge";
