@@ -127,6 +127,6 @@ With the GM’s consent only the active GM’s browser counts, and it sends at m
 * on how many of the last 30 days the module was used
 * how often the GM reveals, hides, uses the polygon and the room tool, changes a whole Level, shares a player’s knowledge, takes a change back, shows what the players know, and how often a Region triggers
 * the settings *Look*, *Open the window with the tools* and *Tell players about changes* (only the chosen option)
-* where errors occur in the module code: file, line and error type, never the error message
+* where errors occur in the module code: file, line, error type and whether the error arose in the module itself, in Foundry, in the game system or in another module, never the error message or the name of another module
 
 No names, notes, pictures or other content of the world are sent.
