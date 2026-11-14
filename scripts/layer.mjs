@@ -10,6 +10,8 @@ import {knowledgeTexture} from "./fog.mjs";
 import {openPanel, refreshPanel} from "./panel-app.mjs";
 import {ellipseShape, near, polygonShape, rectShape} from "./shapes.mjs";
 import {countFeature} from "./usage.mjs";
+import {checkFirst, discardPending, holdChange, pendingChanges, viewNext} from "./view.mjs";
+import {coverMatrix} from "./view-logic.mjs";
 
 /** Colors of the preview: reveal, hide. */
 const PREVIEW = {reveal: 0x3fa66b, hide: 0xc0392b};
@@ -81,9 +83,14 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
         overlay: {name: "overlay", order: 6, title: "SMK.Controls.overlay", icon: "fa-solid fa-users-viewfinder",
           toggle: true, active: setting("overlay"),
           onChange: (event, toggled) => game.settings.set(MODULE_ID, "overlay", toggled)},
-        panel: {name: "panel", order: 7, title: "SMK.Controls.panel", icon: "fa-solid fa-sliders", button: true,
+        view: {name: "view", order: 7, title: "SMK.Controls.view", icon: "fa-solid fa-user-secret", button: true,
+          onChange: () => viewNext(1)},
+        check: {name: "check", order: 8, title: "SMK.Controls.check", icon: "fa-solid fa-clipboard-check",
+          toggle: true, active: checkFirst(),
+          onChange: (event, toggled) => game.settings.set(MODULE_ID, "checkFirst", toggled)},
+        panel: {name: "panel", order: 9, title: "SMK.Controls.panel", icon: "fa-solid fa-sliders", button: true,
           onChange: () => openPanel()},
-        undo: {name: "undo", order: 8, title: "SMK.Controls.undo", icon: "fa-solid fa-rotate-left", button: true,
+        undo: {name: "undo", order: 10, title: "SMK.Controls.undo", icon: "fa-solid fa-rotate-left", button: true,
           onChange: () => undoLast()}
       }
     };
@@ -91,6 +98,12 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
 
   /** The tint over what the players do not know. */
   #overlay;
+
+  /** The cover over what the viewed player does not know (the player view). */
+  #cover;
+
+  /** The outlines of the changes that wait for the check. */
+  #waiting;
 
   /** The shape being drawn. */
   #preview;
@@ -124,6 +137,11 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
     this.#overlay = this.addChild(new PIXI.Sprite(PIXI.Texture.EMPTY));
     this.#overlay.visible = false;
     this.#overlay.eventMode = "none";
+    this.#cover = this.addChild(new PIXI.Sprite(PIXI.Texture.EMPTY));
+    this.#cover.visible = false;
+    this.#cover.eventMode = "none";
+    this.#waiting = this.addChild(new PIXI.Graphics());
+    this.#waiting.eventMode = "none";
     this.#preview = this.addChild(new PIXI.Graphics());
     this.#preview.eventMode = "none";
   }
@@ -133,7 +151,9 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
     this.cancelDrawing();
     const texture = this.#overlay?.texture;
     if ( texture && (texture !== PIXI.Texture.EMPTY) ) texture.destroy(true);
-    this.#overlay = this.#preview = null;
+    const cover = this.#cover?.texture;
+    if ( cover && (cover !== PIXI.Texture.EMPTY) ) cover.destroy(true);
+    this.#overlay = this.#preview = this.#cover = this.#waiting = null;
     return super._tearDown(options);
   }
 
@@ -250,6 +270,8 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
   async #apply(shapes, kind) {
     const hide = this.#hides();
     this.cancelDrawing();
+    // Checking first: the change waits and the cover shows the map as a player would know it
+    if ( checkFirst() && await holdChange(shapes, {hide, kind}) ) return;
     await changeShapes(shapes, {hide, kind});
   }
 
@@ -311,7 +333,11 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
 
   /** @override */
   _onDismissKey(event) {
-    if ( !this.#points.length && !this.#origin ) return false;
+    if ( !this.#points.length && !this.#origin ) {
+      if ( !pendingChanges().length ) return false;
+      discardPending();
+      return true;
+    }
     this.cancelDrawing();
     return true;
   }
@@ -382,6 +408,76 @@ export class MapKnowledgeLayer extends foundry.canvas.layers.InteractionLayer {
         this.#drawPreview(this.#room ? [this.#room] : []);
       }
     });
+  }
+
+  /* -------------------------------------------- */
+  /*  The player view                             */
+  /* -------------------------------------------- */
+
+  /**
+   * Show the cover of the player view. The layer keeps it while another tool group is active.
+   * @param {PIXI.RenderTexture} texture   The fog picture of what the player knows (red channel)
+   * @param {{config: object, x: number, y: number}} area
+   */
+  setCover(texture, area) {
+    const sprite = this.#cover;
+    if ( !sprite ) {
+      texture.destroy(true);
+      return;
+    }
+    const old = sprite.texture;
+    sprite.texture = texture;
+    if ( old && (old !== PIXI.Texture.EMPTY) ) old.destroy(true);
+    sprite.position.set(area.x, area.y);
+    sprite.width = area.config.width;
+    sprite.height = area.config.height;
+    const filter = new PIXI.ColorMatrixFilter();
+    filter.matrix = coverMatrix([0, 0, 0], 1);
+    sprite.filters = [filter];
+    sprite.visible = true;
+  }
+
+  /** Remove the cover. */
+  clearCover() {
+    const sprite = this.#cover;
+    if ( !sprite ) return;
+    sprite.visible = false;
+    const old = sprite.texture;
+    sprite.texture = PIXI.Texture.EMPTY;
+    if ( old && (old !== PIXI.Texture.EMPTY) ) old.destroy(true);
+  }
+
+  /**
+   * Is the cover shown?
+   * @returns {boolean}
+   */
+  get covered() {
+    return !!this.#cover?.visible;
+  }
+
+  /**
+   * The sprite of the cover while it is shown (the fog picture of the viewed player), for tests and the debug file.
+   * @returns {PIXI.Sprite|null}
+   */
+  get coverSprite() {
+    return this.#cover?.visible ? this.#cover : null;
+  }
+
+  /**
+   * Draw the outlines of the changes that wait for the check.
+   * @param {{action: string, shapes: object[]}[]} ops
+   */
+  drawPending(ops) {
+    const g = this.#waiting;
+    if ( !g ) return;
+    g.clear();
+    const width = 3 / (canvas.stage.scale.x || 1);
+    for ( const op of ops ) {
+      const color = (op.action === "hide") ? PREVIEW.hide : PREVIEW.reveal;
+      for ( const shape of op.shapes ) {
+        g.lineStyle({width, color, alpha: 0.95}).beginFill(color, 0.1).drawPolygon(shape.points).endFill();
+      }
+    }
   }
 
   /* -------------------------------------------- */

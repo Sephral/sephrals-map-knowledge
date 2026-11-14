@@ -15,6 +15,8 @@
 * **For the right players:** reveal for everyone or only for the elf who knows the forest. Players who are offline get it on their next visit.
 * **Cover it again:** switch to hide, or hold Alt while you draw, and the players forget an area. Undo takes your last change back.
 * **See what they know:** a tint shows on your map what the chosen players do not know yet, for the whole group or one player.
+* **See through their eyes:** look at your map the way one player knows it, switch between players with one click, and nothing is changed.
+* **Check first:** a shape waits until you have seen the result as the player. Then apply or discard.
 * **The scout tells the others:** give the chosen players everything one player knows of this Level.
 * **Triggered by a Region:** a token walks through the gate and the hall behind it becomes known, once or every time.
 * **Levels and shared fog:** works per Level of a scene and with Foundry’s shared fog of war.

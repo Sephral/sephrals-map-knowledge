@@ -13,6 +13,8 @@ import {noticeNewVersions, runSelfTest} from "./selftest.mjs";
 import {changeLanguage, registerSettings} from "./settings.mjs";
 import {cleanShape, ellipseShape, polygonShape, rectShape} from "./shapes.mjs";
 import {registerUsage} from "./usage.mjs";
+import {applyPending, discardPending, onCanvasReady, onCheckChanged, onTearDown, pendingChanges, refreshViewLater,
+  refreshViewSoon, setViewAs, viewNext, viewState, viewingAs} from "./view.mjs";
 
 /** Update the tint of what the players know a moment after changes or token moves (their client saves after 2 s). */
 const overlaySoon = foundry.utils.debounce(() => canvas[LAYER]?.refreshOverlay(), 700);
@@ -34,20 +36,23 @@ Hooks.once("init", () => {
       const tool = ui.controls?.controls?.[LAYER]?.tools?.overlay;
       if ( tool && (tool.active !== game.settings.get(MODULE_ID, "overlay")) ) ui.controls.render({reset: true});
     },
+    check: onCheckChanged,
     openPanel
   });
   // Counted only on the active GM's client, like every Sephral module
   registerUsage(MODULE_ID, {
     features: ["revealed", "hidden", "polygonUsed", "roomRevealed", "levelChanged", "shared", "undone",
-      "overlayShown", "regionTriggered"],
-    settings: ["theme", "openPanel", "notifyPlayers"]
+      "overlayShown", "regionTriggered", "viewShown", "viewSwitched", "previewApplied",
+      "previewDiscarded"],
+    settings: ["theme", "openPanel", "notifyPlayers", "checkFirst"]
   });
   registerKeys();
   registerDebug(() => ({
     changes: changes().map(e => ({id: e.id, kind: e.kind, action: e.action, scene: e.scene, level: e.level, at: e.at,
       undone: !!e.undone, results: e.results})),
     snapshots: snapshotCount(),
-    waiting: pendingCount()
+    waiting: pendingCount(),
+    view: viewState()
   }));
   game.modules.get(MODULE_ID).api = {
     /** Open the window with the tools (GM). */
@@ -83,6 +88,21 @@ Hooks.once("init", () => {
     /** Is the hide mode on, and switch it. */
     hideMode,
     setHideMode,
+    /**
+     * Look at the map as one player knows it, read only (GM). Takes a player or the id, null turns the view off.
+     * Returns the id of the player now viewed, "" for off.
+     */
+    viewAs: user => setViewAs(user),
+    /** The id of the player of the view, "" when it is off. */
+    viewingAs,
+    /** Go to the next player of the view, -1 for the previous one. Off is part of the round. */
+    viewNext: (step = 1) => viewNext(step),
+    /** The changes that wait for the check before applying: [{action, shapes, kind}]. */
+    pending: () => pendingChanges().map(op => ({...op})),
+    /** Apply the waiting changes (GM). Returns the history entries. */
+    applyPending,
+    /** Throw the waiting changes away (GM). */
+    discardPending: () => discardPending(),
     /** Check the module (GM). */
     runSelfTest,
     /** Save the debug file of Sephral's modules (GM). */
@@ -103,6 +123,7 @@ Hooks.once("ready", async () => {
   watchChanges(() => {
     refreshPanel();
     overlaySoon();
+    refreshViewSoon();
   });
   noticeNewVersions();
 });
@@ -110,10 +131,13 @@ Hooks.once("ready", async () => {
 Hooks.on("canvasReady", () => {
   refreshPanel();
   overlaySoon();
+  onCanvasReady();
 });
+Hooks.on("canvasTearDown", () => onTearDown());
 for ( const hook of ["userConnected", "createUser", "updateUser", "deleteUser"] ) Hooks.on(hook, () => refreshPanel());
 Hooks.on("updateToken", (token, changed) => {
   if ( game.user.isGM && canvas[LAYER]?.active && (("x" in changed) || ("y" in changed)) ) overlayLater();
+  if ( game.user.isGM && viewingAs() && (("x" in changed) || ("y" in changed)) ) refreshViewLater();
 });
 
 /**
@@ -142,6 +166,24 @@ function registerKeys() {
     restricted: true,
     onDown: () => {
       openPanel();
+      return true;
+    }
+  });
+  game.keybindings.register(MODULE_ID, "viewNext", {
+    name: "SMK.Keys.viewNext",
+    editable: [],
+    restricted: true,
+    onDown: () => {
+      viewNext(1);
+      return true;
+    }
+  });
+  game.keybindings.register(MODULE_ID, "viewPrevious", {
+    name: "SMK.Keys.viewPrevious",
+    editable: [],
+    restricted: true,
+    onDown: () => {
+      viewNext(-1);
       return true;
     }
   });

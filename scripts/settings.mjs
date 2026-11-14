@@ -21,12 +21,13 @@ export const SETTINGS = {
     scope: "client", onChange: "overlay"},
   overlayOpacity: {type: Number, default: 0.6, scope: "client", range: {min: 0.2, max: 0.9, step: 0.05},
     onChange: "overlay"},
-  notifyPlayers: {type: Boolean, default: false}
+  notifyPlayers: {type: Boolean, default: false},
+  checkFirst: {type: Boolean, default: false, scope: "client", onChange: "check"}
 };
 
 /**
  * Register all settings of the module and its menus.
- * @param {{language: Function, redraw: Function, overlay: Function, openPanel: Function}} handlers
+ * @param {{language: Function, redraw: Function, overlay: Function, check: Function, openPanel: Function}} handlers
  */
 export function registerSettings(handlers) {
   openPanelMenu = handlers.openPanel;

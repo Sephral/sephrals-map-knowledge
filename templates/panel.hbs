@@ -59,6 +59,21 @@
     {{/unless}}
   </section>
 
+  {{#unless noPlayers}}
+  <section class="smk-card">
+    <h3>{{text.viewTitle}}</h3>
+    <div class="smk-viewers" role="group" aria-label="{{text.viewTitle}}">
+      <button type="button" data-action="viewAs" data-user="" class="smk-viewer {{#if viewOff}}smk-on{{/if}}" aria-pressed="{{#if viewOff}}true{{else}}false{{/if}}">{{text.viewOff}}</button>
+      {{#each viewers}}
+      <button type="button" data-action="viewAs" data-user="{{id}}" class="smk-viewer {{#if on}}smk-on{{/if}}" aria-pressed="{{#if on}}true{{else}}false{{/if}}"><span class="smk-dot" style="--smk-user: {{color}}"></span> {{name}}</button>
+      {{/each}}
+    </div>
+    <p class="smk-hint">{{text.viewHint}}</p>
+    <label class="smk-check"><input type="checkbox" name="checkFirst" {{#if checkFirst}}checked{{/if}}> {{text.checkFirst}}</label>
+    <p class="smk-hint">{{text.checkHint}}</p>
+  </section>
+  {{/unless}}
+
   <section class="smk-card">
     <h3>{{text.view}}</h3>
     <div class="smk-row">

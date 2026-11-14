@@ -8,6 +8,7 @@ import {blocker, changeWholeLevel, playerRows, shareKnowledge, undoLast} from ".
 import {sharesFog} from "./fog.mjs";
 import {hideMode, setHideMode} from "./layer.mjs";
 import {changes, countResults} from "./relay.mjs";
+import {setViewAs, viewingAs} from "./view.mjs";
 
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
 
@@ -30,7 +31,8 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
       hideWhole: PanelApp.#onHideWhole,
       share: PanelApp.#onShare,
       undo: PanelApp.#onUndo,
-      tools: PanelApp.#onTools
+      tools: PanelApp.#onTools,
+      viewAs: PanelApp.#onViewAs
     }
   };
 
@@ -68,6 +70,9 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
         overlay: r.id === overlayUser})),
       noPlayers: !rows.length,
       overlay: setting("overlay"),
+      checkFirst: !!setting("checkFirst"),
+      viewOff: !viewingAs(),
+      viewers: rows.map(r => ({id: r.id, name: r.name, color: r.color, online: r.online, on: r.id === viewingAs()})),
       overlayGroup: !overlayUser,
       last: last ? this.#lastLine(last) : "",
       canUndo: changes().some(e => !e.undone),
@@ -93,6 +98,11 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
         overlay: t("SMK.Panel.overlay"),
         overlayGroup: t("SMK.Panel.overlayGroup"),
         undo: t("SMK.Panel.undo"),
+        viewTitle: t("SMK.Panel.viewTitle"),
+        viewOff: t("SMK.Panel.viewOff"),
+        viewHint: t("SMK.Panel.viewHint"),
+        checkFirst: t("SMK.Panel.checkFirst"),
+        checkHint: t("SMK.Panel.checkHint"),
         tools: t("SMK.Panel.tools"),
         toolsHint: t("SMK.Panel.toolsHint")
       }
@@ -132,6 +142,9 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
     }
     root.querySelector("select[name=shareFrom]")?.addEventListener("change", event => {
       this.#shareFrom = event.target.value;
+    });
+    root.querySelector("input[name=checkFirst]")?.addEventListener("change", event => {
+      game.settings.set(MODULE_ID, "checkFirst", event.target.checked);
     });
     root.querySelector("input[name=overlay]")?.addEventListener("change", event => {
       game.settings.set(MODULE_ID, "overlay", event.target.checked);
@@ -188,6 +201,11 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
   /** @this {PanelApp} */
   static async #onUndo() {
     await undoLast();
+  }
+
+  /** @this {PanelApp} */
+  static #onViewAs(event, target) {
+    return setViewAs(target.dataset.user || null);
   }
 
   /** @this {PanelApp} */

@@ -32,6 +32,10 @@
       "notifyPlayers": {
         "name": "Spieler über Änderungen informieren",
         "hint": "Spieler bekommen einen kurzen Hinweis, wenn du Bereiche für sie aufdeckst oder verdeckst."
+      },
+      "checkFirst": {
+        "name": "Vor dem Anwenden prüfen",
+        "hint": "Eine fertige Form wartet, bis du sie anwendest. Bis dahin zeigt deine Karte, was der Spieler danach wüsste. Auch ein Schalter im Fenster von Kartenwissen."
       }
     },
     "Controls": {
@@ -43,7 +47,9 @@
       "hideMode": "Verdecken statt aufdecken (oder Alt halten)",
       "overlay": "Zeigen, was die Spieler kennen",
       "panel": "Fenster Kartenwissen",
-      "undo": "Letzte Änderung zurücknehmen (Strg+Z)"
+      "undo": "Letzte Änderung zurücknehmen (Strg+Z)",
+      "view": "Mit den Augen eines Spielers sehen: nächster Spieler (aus, dann jeder Spieler)",
+      "check": "Vor dem Anwenden prüfen: eine Form wartet und du siehst das Ergebnis als Spieler"
     },
     "Panel": {
       "title": "Kartenwissen",
@@ -76,7 +82,12 @@
       "tools": "Werkzeuge wählen",
       "toolsHint": "Ziehen, Ecken anklicken oder in einen Raum klicken. Alt halten zum Verdecken.",
       "last": "{what}: {action} für {done} um {time}",
-      "lastFailed": "{what}: {action} für {done}, {failed} fehlgeschlagen, um {time}"
+      "lastFailed": "{what}: {action} für {done}, {failed} fehlgeschlagen, um {time}",
+      "viewTitle": "Ansicht als Spieler",
+      "viewOff": "Aus",
+      "viewHint": "Deine Karte ist dort verdeckt, wo dieser Spieler noch nichts weiß. Nur zum Ansehen, nichts wird verändert.",
+      "checkFirst": "Vor dem Anwenden prüfen",
+      "checkHint": "Formen warten, bis du sie anwendest. Du siehst das Ergebnis als der Spieler und wendest es dann an oder verwirfst es."
     },
     "Kind": {
       "rect": "Rechteck",
@@ -146,7 +157,9 @@
     },
     "Keys": {
       "openPanel": "Fenster Kartenwissen öffnen",
-      "toggleMode": "Zwischen Aufdecken und Verdecken wechseln"
+      "toggleMode": "Zwischen Aufdecken und Verdecken wechseln",
+      "viewNext": "Ansicht als nächster Spieler",
+      "viewPrevious": "Ansicht als vorheriger Spieler"
     },
     "SELFTEST": {
       "Title": "Selbsttest von Kartenwissen",
@@ -166,7 +179,8 @@
       "Problems": "Kartenwissen: {problems} von {checks} Prüfungen haben ein Problem gefunden.",
       "Passed": "Kartenwissen: alle {checks} Prüfungen bestanden.",
       "Version": "Foundry {current}, getestet mit {tested}.",
-      "NewVersions": "Kartenwissen wurde mit einer älteren Version getestet ({versions}). Starte den Selbsttest in seinen Einstellungen."
+      "NewVersions": "Kartenwissen wurde mit einer älteren Version getestet ({versions}). Starte den Selbsttest in seinen Einstellungen.",
+      "View": "Der Ansicht als Spieler fehlt der Filter für die Abdeckung oder ihre Logik."
     },
     "DEBUG": {
       "Title": "Debug-Datei",
@@ -174,6 +188,19 @@
       "Hint": "Speichert eine Datei für Fehlerberichte über alle Module von Sephral in dieser Welt: Versionen, Einstellungen und was die Module aufgezeichnet haben, etwa die letzten Chatnachrichten, die sie gelesen haben. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen.",
       "Entry": "Debug-Datei speichern (Sephral’s Module)",
       "Saved": "Debug-Datei {file} gespeichert. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen."
+    },
+    "View": {
+      "viewing": "Ansicht als {name}, nur lesen",
+      "previous": "Vorheriger Spieler",
+      "next": "Nächster Spieler",
+      "exit": "Ansicht verlassen",
+      "checkAs": "Prüfen als {name}: {count} Formen, {what}",
+      "revealing": "aufdecken",
+      "hiding": "verdecken",
+      "mixed": "aufdecken und verdecken",
+      "notAffected": "{name} bekommt diese Änderung nicht.",
+      "apply": "Anwenden",
+      "discard": "Verwerfen"
     }
   }
 }

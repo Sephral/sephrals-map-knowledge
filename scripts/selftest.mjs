@@ -5,6 +5,7 @@
 
 import {BEHAVIOR_TYPE, LAYER, MODULE_ID, TESTED_VERSIONS, esc, t} from "./config.mjs";
 import {drawingWorks, fogApiReady} from "./fog.mjs";
+import {coverMatrix, cycleUser, describePending, previewUser, viewUsers} from "./view-logic.mjs";
 
 /**
  * Run all checks.
@@ -27,10 +28,16 @@ async function checkAll() {
   check(!!CONFIG.RegionBehavior.dataModels[BEHAVIOR_TYPE], "SMK.SELFTEST.Behavior");
   check(game.modules.get(MODULE_ID)?.socket === true, "SMK.SELFTEST.Socket");
   check(!canvas?.ready || !!canvas[LAYER], "SMK.SELFTEST.Layer");
-  for ( const key of ["targetAll", "targetChosen", "overlay"] ) {
+  // The player view: the cover filter and the logic on top of it
+  check((typeof PIXI?.ColorMatrixFilter === "function") && (coverMatrix([0, 0, 0], 1).length === 20)
+    && (cycleUser(["a", "b"], "b", 1) === "") && (viewUsers("a", {shared: true, playerIds: ["a", "b"]}).length === 2)
+    && (previewUser({viewAs: "a", playerIds: ["a"]}) === "a") && (describePending([]).shapes === 0)
+    && (!canvas?.ready || (typeof canvas[LAYER]?.setCover === "function")), "SMK.SELFTEST.View");
+  for ( const key of ["targetAll", "targetChosen", "overlay", "checkFirst"] ) {
     check(game.settings.settings.has(`${MODULE_ID}.${key}`), "SMK.SELFTEST.Storage", {key});
   }
-  const keys = ["SMK.Panel.title", "SMK.Controls.title", "SMK.Notice.noExploration", "SMK.BEHAVIOR.FIELDS.area.label"];
+  const keys = ["SMK.Panel.title", "SMK.Controls.title", "SMK.Notice.noExploration", "SMK.BEHAVIOR.FIELDS.area.label", "SMK.View.viewing",
+    "SMK.Panel.viewTitle"];
   const missing = keys.filter(key => !game.i18n.has(key));
   check(!missing.length, "SMK.SELFTEST.Texts", {keys: missing.join(", ")});
   if ( canvas?.ready ) check(await drawingWorks().catch(() => false), "SMK.SELFTEST.Drawing");

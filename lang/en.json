@@ -32,6 +32,10 @@
       "notifyPlayers": {
         "name": "Tell players about changes",
         "hint": "Players get a short notice when you reveal or hide areas for them."
+      },
+      "checkFirst": {
+        "name": "Check before applying",
+        "hint": "A finished shape waits until you apply it. Meanwhile your map shows what the player would know afterwards. Also a switch in the Map Knowledge window."
       }
     },
     "Controls": {
@@ -43,7 +47,9 @@
       "hideMode": "Hide instead of reveal (or hold Alt)",
       "overlay": "Show what the players know",
       "panel": "Map Knowledge window",
-      "undo": "Undo the last change (Ctrl+Z)"
+      "undo": "Undo the last change (Ctrl+Z)",
+      "view": "Look through a player's eyes: next player (off, then each player)",
+      "check": "Check before applying: a shape waits and you see the result as a player"
     },
     "Panel": {
       "title": "Map Knowledge",
@@ -76,7 +82,12 @@
       "tools": "Pick the tools",
       "toolsHint": "Drag, click corners or click into a room. Hold Alt to hide.",
       "last": "{what}: {action} for {done} at {time}",
-      "lastFailed": "{what}: {action} for {done}, {failed} failed, at {time}"
+      "lastFailed": "{what}: {action} for {done}, {failed} failed, at {time}",
+      "viewTitle": "View as a player",
+      "viewOff": "Off",
+      "viewHint": "Your map is covered where this player knows nothing yet. Read only, nothing is changed.",
+      "checkFirst": "Check before applying",
+      "checkHint": "Shapes wait until you apply them. You see the result as the player, then apply or discard."
     },
     "Kind": {
       "rect": "Rectangle",
@@ -146,7 +157,9 @@
     },
     "Keys": {
       "openPanel": "Open the Map Knowledge window",
-      "toggleMode": "Switch between reveal and hide"
+      "toggleMode": "Switch between reveal and hide",
+      "viewNext": "View as the next player",
+      "viewPrevious": "View as the previous player"
     },
     "SELFTEST": {
       "Title": "Map Knowledge self test",
@@ -166,7 +179,8 @@
       "Problems": "Map Knowledge: {problems} of {checks} checks found a problem.",
       "Passed": "Map Knowledge: all {checks} checks passed.",
       "Version": "Foundry {current}, tested with {tested}.",
-      "NewVersions": "Map Knowledge was tested with an older version ({versions}). Run the self test in its settings."
+      "NewVersions": "Map Knowledge was tested with an older version ({versions}). Run the self test in its settings.",
+      "View": "The player view is missing its cover filter or its logic."
     },
     "DEBUG": {
       "Title": "Debug file",
@@ -174,6 +188,19 @@
       "Hint": "Saves one file for bug reports about all of Sephral’s modules in this world: versions, settings and what the modules recorded, such as the latest chat messages they read. It contains chat text and whispers, check it before you share it.",
       "Entry": "Save Debug File (Sephral’s Modules)",
       "Saved": "Debug file {file} saved. It contains chat text and whispers, check it before you share it."
+    },
+    "View": {
+      "viewing": "Viewing as {name}, read only",
+      "previous": "Previous player",
+      "next": "Next player",
+      "exit": "Leave the view",
+      "checkAs": "Check as {name}: {count} shapes, {what}",
+      "revealing": "revealing",
+      "hiding": "hiding",
+      "mixed": "revealing and hiding",
+      "notAffected": "{name} does not get this change.",
+      "apply": "Apply",
+      "discard": "Discard"
     }
   }
 }
