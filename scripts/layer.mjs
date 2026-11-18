@@ -37,7 +37,7 @@ export function hideMode() {
 export function setHideMode(hide) {
   mode = hide ? "hide" : "reveal";
   const tool = ui.controls?.controls?.[LAYER]?.tools?.hideMode;
-  if ( tool && (tool.active !== hide) ) ui.controls.render({reset: true});
+  if ( tool && (tool.active !== hide) ) ui.controls.render({reset: true})?.catch?.(() => {});
   canvas[LAYER]?.redrawPreview();
   refreshPanel();
 }

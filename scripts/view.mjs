@@ -193,7 +193,7 @@ async function switchUser(step) {
 /** The setting "check before applying" changed. */
 export function onCheckChanged() {
   const tool = ui.controls?.controls?.[LAYER]?.tools?.check;
-  if ( tool && (tool.active !== !!setting("checkFirst")) ) ui.controls.render({reset: true});
+  if ( tool && (tool.active !== !!setting("checkFirst")) ) ui.controls.render({reset: true})?.catch?.(() => {});
   refreshPanel();
   updateBar();
 }

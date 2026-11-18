@@ -34,7 +34,7 @@ Hooks.once("init", () => {
       overlaySoon();
       refreshPanel();
       const tool = ui.controls?.controls?.[LAYER]?.tools?.overlay;
-      if ( tool && (tool.active !== game.settings.get(MODULE_ID, "overlay")) ) ui.controls.render({reset: true});
+      if ( tool && (tool.active !== game.settings.get(MODULE_ID, "overlay")) ) ui.controls.render({reset: true})?.catch?.(() => {});
     },
     check: onCheckChanged,
     openPanel
