@@ -43,12 +43,24 @@
   color: var(--smk-ink);
 }
 
+.smk-app .window-content > [data-application-part] {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The panel scrolls when the screen is low, the Undo row stays at the bottom */
 .smk-shell {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 10px 12px 12px;
+  padding: 10px 12px 0;
   font-size: 13px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
 }
 
 /* Buttons */
@@ -288,6 +300,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  position: sticky;
+  bottom: 0;
+  flex: 0 0 auto;
+  margin: 0 -12px;
+  padding: 8px 12px 10px;
+  background: var(--smk-paper-2);
+  border-top: 1px solid var(--smk-line);
 }
 
 .smk-last {
@@ -369,4 +388,39 @@
   height: 26px;
   padding: 0 9px;
   font-size: 12px;
+}
+
+/* Checkboxes stay readable when they are not ticked */
+.smk-app input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 2px solid var(--smk-muted);
+  border-radius: 4px;
+  background: var(--smk-field);
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+}
+
+.smk-app input[type="checkbox"]::after {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid var(--smk-on-accent);
+  border-bottom: 2px solid var(--smk-on-accent);
+  transform: rotate(-45deg) translate(1px, -1px);
+  opacity: 0;
+}
+
+.smk-app input[type="checkbox"]:checked {
+  background: var(--smk-accent);
+  border-color: var(--smk-accent);
+}
+
+.smk-app input[type="checkbox"]:checked::after {
+  opacity: 1;
 }
