@@ -201,6 +201,31 @@
       "notAffected": "{name} bekommt diese Änderung nicht.",
       "apply": "Anwenden",
       "discard": "Verwerfen"
+    },
+    "Sample": {
+      "Group": {
+        "windows": "Fenster mit den Werkzeugen",
+        "history": "Verlauf",
+        "bar": "Leiste über der Karte",
+        "tools": "Werkzeuge und Tasten",
+        "questions": "Rückfragen",
+        "behavior": "Regionsverhalten"
+      },
+      "Level": "Erdgeschoss",
+      "Label": {
+        "panel": "Fenster mit den Werkzeugen (Nebel je Spieler)",
+        "panelShared": "Fenster (gemeinsamer Nebel, Ansicht an, eine fehlgeschlagene Änderung)",
+        "panelVision": "Fenster (Szene ohne Token-Sicht)",
+        "panelExploration": "Fenster (Szene ohne Erkundung)",
+        "panelApi": "Fenster (Nebel nicht erreichbar)",
+        "panelEmpty": "Fenster (keine Szene, keine Spieler)",
+        "history": "Die letzten Änderungen im Verlauf",
+        "bar": "Leiste für Prüfen und Ansicht",
+        "tools": "Die Werkzeuge",
+        "keys": "Die Tasten",
+        "hideConfirm": "Rückfrage: ganze Ebene verbergen",
+        "behavior": "Einstellungen des Regionsverhaltens"
+      }
     }
   }
 }

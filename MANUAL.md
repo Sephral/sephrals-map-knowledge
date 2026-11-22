@@ -93,6 +93,10 @@ Your choice of players and of the view is kept in your browser.
 
 *Open the Map Knowledge window*, *Switch between reveal and hide*, *View as the next player* and *View as the previous player* have no keys by default. Set them in Foundry’s *Configure Controls*.
 
+## Live translation
+
+When Sephral’s Translator is installed and a translation is being typed, the floating bar of the player view and of the check before applying is built again while you type, so its texts change without a reload. The module listens to the translator’s hook `sephrals-translator.refresh` and announces this with `api.translatorRefresh = true`. The map layer itself draws no text. Without the translator nothing of this runs.
+
 ## Self test
 
 *Run self test* in the module settings checks what Map Knowledge needs from Foundry: the Foundry version, the fog of war it draws into, fog exploration per Level, the wall polygons for the room tool, the Region behavior, the module socket, the tools on the canvas, its settings and texts, and draws a small test map. The result comes as a notification and a chat message only you see, with the Foundry version the module was verified with. After a Foundry update you get a one time notice to run it.
@@ -143,6 +147,7 @@ Map Knowledge keeps nothing of its own in the world. What a player knows is Foun
 | `discardPending()` | Throws the waiting shapes away |
 | `runSelfTest()` | Runs the self test |
 | `saveDebugFile()` | Saves the debug file |
+| `samples()` | The list of sample windows with made-up players and changes (window, bar, history, tools, keys, Region behavior, question), for translators and testers. Nothing is saved, the map is not touched |
 
 After every change and undo the hook `sephrals-map-knowledge.changed` is called with the change.
 

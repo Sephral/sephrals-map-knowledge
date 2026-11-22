@@ -201,6 +201,31 @@
       "notAffected": "{name} does not get this change.",
       "apply": "Apply",
       "discard": "Discard"
+    },
+    "Sample": {
+      "Group": {
+        "windows": "Window with the tools",
+        "history": "History",
+        "bar": "Bar over the map",
+        "tools": "Tools and keys",
+        "questions": "Questions",
+        "behavior": "Region behavior"
+      },
+      "Level": "Ground floor",
+      "Label": {
+        "panel": "Window with the tools (fog per player)",
+        "panelShared": "Window (shared fog, view on, a failed change)",
+        "panelVision": "Window (scene without token vision)",
+        "panelExploration": "Window (scene without exploration)",
+        "panelApi": "Window (fog of war not reachable)",
+        "panelEmpty": "Window (no scene, no players)",
+        "history": "The last changes of the history",
+        "bar": "Check and view bar",
+        "tools": "The tools",
+        "keys": "The keys",
+        "hideConfirm": "Question: hide the whole Level",
+        "behavior": "Settings of the Region behavior"
+      }
     }
   }
 }

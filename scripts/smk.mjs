@@ -12,6 +12,8 @@ import {changes, pendingCount, registerRelay, watchChanges} from "./relay.mjs";
 import {noticeNewVersions, runSelfTest} from "./selftest.mjs";
 import {changeLanguage, registerSettings} from "./settings.mjs";
 import {cleanShape, ellipseShape, polygonShape, rectShape} from "./shapes.mjs";
+import {startTranslatorRefresh} from "./translator-refresh.mjs";
+import {sampleWindows} from "./sample-windows.mjs";
 import {registerUsage} from "./usage.mjs";
 import {applyPending, discardPending, onCanvasReady, onCheckChanged, onTearDown, pendingChanges, refreshViewLater,
   refreshViewSoon, setViewAs, viewNext, viewState, viewingAs} from "./view.mjs";
@@ -54,7 +56,10 @@ Hooks.once("init", () => {
     waiting: pendingCount(),
     view: viewState()
   }));
+  startTranslatorRefresh();
   game.modules.get(MODULE_ID).api = {
+    /** True: this module redraws its bar on the hook "sephrals-translator.refresh". */
+    translatorRefresh: true,
     /** Open the window with the tools (GM). */
     open: openPanel,
     /**
@@ -106,7 +111,9 @@ Hooks.once("init", () => {
     /** Check the module (GM). */
     runSelfTest,
     /** Save the debug file of Sephral's modules (GM). */
-    saveDebugFile: messageId => saveDebugFile(messageId ?? null, {moduleId: MODULE_ID})
+    saveDebugFile: messageId => saveDebugFile(messageId ?? null, {moduleId: MODULE_ID}),
+    /** Sample windows with made-up players and changes for translators and testers, nothing is saved. */
+    samples: () => sampleWindows()
   };
 });
 

@@ -13,9 +13,35 @@ import {setViewAs, viewingAs} from "./view.mjs";
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
 
 /** Labels of the kinds of changes. */
-const KIND_LABELS = {rect: "SMK.Kind.rect", ellipse: "SMK.Kind.ellipse", polygon: "SMK.Kind.polygon",
+export const KIND_LABELS = {rect: "SMK.Kind.rect", ellipse: "SMK.Kind.ellipse", polygon: "SMK.Kind.polygon",
   room: "SMK.Kind.room", whole: "SMK.Kind.whole", region: "SMK.Kind.region", share: "SMK.Kind.share",
   api: "SMK.Kind.api"};
+
+/**
+ * The line about a change in the history: what, when, for how many.
+ * @param {object} entry
+ * @returns {string}
+ */
+export function describeChange(entry) {
+  const what = t(KIND_LABELS[entry.kind] ?? "SMK.Kind.api");
+  const action = t(`SMK.Action.${entry.undone ? "undone" : entry.action}`);
+  const {done, failed} = countResults(entry.results);
+  const time = new Date(entry.at).toLocaleTimeString(game.i18n.lang, {hour: "2-digit", minute: "2-digit"});
+  return t(failed ? "SMK.Panel.lastFailed" : "SMK.Panel.last", {what, action, done, failed, time});
+}
+
+/**
+ * The texts of the window.
+ * @returns {Record<string, string>}
+ */
+function panelTexts() {
+  const keys = ["reveal", "hide", "modeHint", "who", "all", "chosen", "sharedNote", "noPlayers", "online", "offline",
+    "revealWhole", "hideWhole", "shareTitle", "share", "shareHint", "view", "overlay", "overlayGroup", "undo",
+    "viewTitle", "viewOff", "viewHint", "checkFirst", "checkHint", "tools", "toolsHint"];
+  const text = Object.fromEntries(keys.map(key => [key, t(`SMK.Panel.${key}`)]));
+  text.level = t("SMK.Panel.levelTitle");
+  return text;
+}
 
 export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
   /** @override */
@@ -47,79 +73,63 @@ export class PanelApp extends HandlebarsApplicationMixin(ApplicationV2) {
     return t("SMK.Panel.title");
   }
 
-  /** @override */
-  async _prepareContext() {
+  /**
+   * What the window shows, read from the world: the viewed scene, the players and the history. The sample window
+   * (samples) gives made-up data instead.
+   * @returns {object}
+   */
+  _panelSource() {
     const scene = canvas.scene;
     const level = canvas.level;
     const problem = blocker(scene);
-    const shared = sharesFog(scene);
     const rows = playerRows();
-    if ( !rows.some(r => r.id === this.#shareFrom) ) this.#shareFrom = rows[0]?.id ?? "";
-    const last = changes().at(-1);
-    const overlayUser = setting("overlayUser");
     return {
       theme: setting("theme"),
       scene: scene?.navName || scene?.name || t("SMK.Panel.noScene"),
       level: (scene?.levels?.size > 1) ? (level?.name ?? "") : "",
-      fog: scene ? t(shared ? "SMK.Panel.fogShared" : "SMK.Panel.fogIndividual") : "",
+      fog: scene ? t(sharesFog(scene) ? "SMK.Panel.fogShared" : "SMK.Panel.fogIndividual") : "",
       problem: problem ? t(problem) : "",
-      shared,
+      shared: sharesFog(scene),
       hide: hideMode(),
-      all: shared || setting("targetAll"),
-      players: rows.map(r => ({...r, chosen: shared || r.chosen, share: r.id === this.#shareFrom,
-        overlay: r.id === overlayUser})),
-      noPlayers: !rows.length,
-      overlay: setting("overlay"),
-      checkFirst: !!setting("checkFirst"),
-      viewOff: !viewingAs(),
-      viewers: rows.map(r => ({id: r.id, name: r.name, color: r.color, online: r.online, on: r.id === viewingAs()})),
-      overlayGroup: !overlayUser,
-      last: last ? this.#lastLine(last) : "",
+      targetAll: setting("targetAll"),
+      rows,
+      last: changes().at(-1) ?? null,
       canUndo: changes().some(e => !e.undone),
       layerActive: canvas[LAYER]?.active ?? false,
-      text: {
-        reveal: t("SMK.Panel.reveal"),
-        hide: t("SMK.Panel.hide"),
-        modeHint: t("SMK.Panel.modeHint"),
-        who: t("SMK.Panel.who"),
-        all: t("SMK.Panel.all"),
-        chosen: t("SMK.Panel.chosen"),
-        sharedNote: t("SMK.Panel.sharedNote"),
-        noPlayers: t("SMK.Panel.noPlayers"),
-        online: t("SMK.Panel.online"),
-        offline: t("SMK.Panel.offline"),
-        level: t("SMK.Panel.levelTitle"),
-        revealWhole: t("SMK.Panel.revealWhole"),
-        hideWhole: t("SMK.Panel.hideWhole"),
-        shareTitle: t("SMK.Panel.shareTitle"),
-        share: t("SMK.Panel.share"),
-        shareHint: t("SMK.Panel.shareHint"),
-        view: t("SMK.Panel.view"),
-        overlay: t("SMK.Panel.overlay"),
-        overlayGroup: t("SMK.Panel.overlayGroup"),
-        undo: t("SMK.Panel.undo"),
-        viewTitle: t("SMK.Panel.viewTitle"),
-        viewOff: t("SMK.Panel.viewOff"),
-        viewHint: t("SMK.Panel.viewHint"),
-        checkFirst: t("SMK.Panel.checkFirst"),
-        checkHint: t("SMK.Panel.checkHint"),
-        tools: t("SMK.Panel.tools"),
-        toolsHint: t("SMK.Panel.toolsHint")
-      }
+      overlay: setting("overlay"),
+      overlayUser: setting("overlayUser"),
+      checkFirst: !!setting("checkFirst"),
+      viewing: viewingAs()
     };
   }
 
-  /**
-   * The line about the last change: what, when, for how many.
-   * @param {object} entry
-   * @returns {string}
-   */
-  #lastLine(entry) {
-    const what = t(KIND_LABELS[entry.kind] ?? "SMK.Kind.api");
-    const action = t(`SMK.Action.${entry.undone ? "undone" : entry.action}`);
-    const {done, failed} = countResults(entry.results);
-    const time = new Date(entry.at).toLocaleTimeString(game.i18n.lang, {hour: "2-digit", minute: "2-digit"});
-    return t(failed ? "SMK.Panel.lastFailed" : "SMK.Panel.last", {what, action, done, failed, time});
+  /** @override */
+  async _prepareContext() {
+    const source = this._panelSource();
+    const {rows, shared} = source;
+    if ( !rows.some(r => r.id === this.#shareFrom) ) this.#shareFrom = rows[0]?.id ?? "";
+    return {
+      theme: source.theme,
+      scene: source.scene,
+      level: source.level,
+      fog: source.fog,
+      problem: source.problem,
+      shared,
+      hide: source.hide,
+      all: shared || source.targetAll,
+      players: rows.map(r => ({...r, chosen: shared || r.chosen, share: r.id === this.#shareFrom,
+        overlay: r.id === source.overlayUser})),
+      noPlayers: !rows.length,
+      overlay: source.overlay,
+      checkFirst: source.checkFirst,
+      viewOff: !source.viewing,
+      viewers: rows.map(r => ({id: r.id, name: r.name, color: r.color, online: r.online, on: r.id === source.viewing})),
+      overlayGroup: !source.overlayUser,
+      last: source.last ? describeChange(source.last) : "",
+      canUndo: source.canUndo,
+      layerActive: source.layerActive,
+      text: panelTexts()
+    };
   }
 
   /** @override */

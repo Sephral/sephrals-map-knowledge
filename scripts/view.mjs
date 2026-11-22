@@ -314,6 +314,29 @@ export function updateBar() {
     document.body.append(bar);
   }
   bar.dataset.smkTheme = setting("theme");
+  const counts = pending.length ? describePending(pending) : null;
+  const user = game.users.get(shownUser());
+  fillBar(bar, {
+    check: counts && {name: user?.name ?? "", count: counts.shapes,
+      what: (counts.hide && counts.reveal) ? "mixed" : (counts.hide ? "hiding" : "revealing"),
+      notAffected: !wouldAffect(user?.id, chosenPlayers())},
+    view: viewAs ? {name: game.users.get(viewAs)?.name ?? ""} : null
+  }, {
+    previousCheck: () => switchUser(-1), nextCheck: () => switchUser(1), apply: applyPending,
+    discard: () => discardPending(), previousView: () => viewNext(-1), nextView: () => viewNext(1),
+    exit: () => setViewAs(null)
+  });
+}
+
+/**
+ * Fill the bar with its rows: the check (what waits, as whom) and the view (as whom). Used by the real bar and by the
+ * sample window, which gives no handlers, so its buttons do nothing.
+ * @param {HTMLElement} bar
+ * @param {{check: {name: string, count: number, what: string, notAffected?: boolean}|null,
+ *   view: {name: string}|null}} model   what: "revealing", "hiding" or "mixed"
+ * @param {Record<string, Function>} [handlers]
+ */
+export function fillBar(bar, {check, view}, handlers = {}) {
   bar.replaceChildren();
   const row = cls => {
     const el = document.createElement("div");
@@ -329,30 +352,28 @@ export function updateBar() {
     span.append(i, document.createTextNode(` ${text}`));
     el.append(span);
   };
-  if ( pending.length ) {
-    const counts = describePending(pending);
-    const what = (counts.hide && counts.reveal) ? t("SMK.View.mixed")
-      : t(counts.hide ? "SMK.View.hiding" : "SMK.View.revealing");
-    const user = game.users.get(shownUser());
+  const run = fn => fn ?? (() => {});
+  if ( check ) {
     const el = row("is-check");
-    label(el, "fa-clipboard-check", t("SMK.View.checkAs", {name: user?.name ?? "", count: counts.shapes, what}));
-    if ( !wouldAffect(user?.id, chosenPlayers()) ) {
+    label(el, "fa-clipboard-check", t("SMK.View.checkAs", {name: check.name, count: check.count,
+      what: t(`SMK.View.${check.what}`)}));
+    if ( check.notAffected ) {
       const note = document.createElement("span");
       note.className = "smk-viewbar-note";
-      note.textContent = t("SMK.View.notAffected", {name: user?.name ?? ""});
+      note.textContent = t("SMK.View.notAffected", {name: check.name});
       el.append(note);
     }
-    el.append(barButton("fa-chevron-left", t("SMK.View.previous"), () => switchUser(-1), "prev", true),
-      barButton("fa-chevron-right", t("SMK.View.next"), () => switchUser(1), "next", true),
-      barButton("fa-check", t("SMK.View.apply"), applyPending, "apply"),
-      barButton("fa-xmark", t("SMK.View.discard"), () => discardPending(), "discard"));
+    el.append(barButton("fa-chevron-left", t("SMK.View.previous"), run(handlers.previousCheck), "prev", true),
+      barButton("fa-chevron-right", t("SMK.View.next"), run(handlers.nextCheck), "next", true),
+      barButton("fa-check", t("SMK.View.apply"), run(handlers.apply), "apply"),
+      barButton("fa-xmark", t("SMK.View.discard"), run(handlers.discard), "discard"));
   }
-  if ( viewAs ) {
+  if ( view ) {
     const el = row("is-view");
-    label(el, "fa-eye", t("SMK.View.viewing", {name: game.users.get(viewAs)?.name ?? ""}));
-    el.append(barButton("fa-chevron-left", t("SMK.View.previous"), () => viewNext(-1), "viewPrev", true),
-      barButton("fa-chevron-right", t("SMK.View.next"), () => viewNext(1), "viewNext", true),
-      barButton("fa-eye-slash", t("SMK.View.exit"), () => setViewAs(null), "exit"));
+    label(el, "fa-eye", t("SMK.View.viewing", {name: view.name}));
+    el.append(barButton("fa-chevron-left", t("SMK.View.previous"), run(handlers.previousView), "viewPrev", true),
+      barButton("fa-chevron-right", t("SMK.View.next"), run(handlers.nextView), "viewNext", true),
+      barButton("fa-eye-slash", t("SMK.View.exit"), run(handlers.exit), "exit"));
   }
 }
 
